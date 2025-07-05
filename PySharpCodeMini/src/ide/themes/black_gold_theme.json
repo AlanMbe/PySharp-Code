@@ -1,0 +1,17 @@
+{
+    "font_name": "Consolas",
+    "font_size": 14,
+    "font_style": "normal",
+    "editor_background": "#1e1e1e",
+    "editor_foreground": "#d4d4d4",
+    "terminal_background": "#1e1e1e",
+    "terminal_foreground": "#d4d4d4",
+    "highlighting_colors": {
+        "keyword_color": "#ffcc00",
+        "string_color": "#d19a66",
+        "comment_color": "#6a9955",
+        "function_color": "#c586c0",
+        "class_color": "#4ec9b0",
+        "call_color": "#9cdcfe"
+    }
+}
