@@ -543,7 +543,8 @@ class MainWindow(QMainWindow):
         self.scale_factor = 1.0
         base_dir = os.path.abspath(os.path.dirname(__file__))
         icon_dir = os.path.join(base_dir, "icons")
-
+        self.left_menu = self.init_left_menu(icon_dir)
+        self.tree = self.init_sidebar()
         # 多标签页编辑器
         self.tab_widget = QTabWidget()
         self.tab_widget.setTabsClosable(True)
@@ -824,27 +825,7 @@ QTabBar::close-button::pressed {
             elif event.key() == Qt.Key_Minus:
                 self.zoom_out()
                 return
-        if self.popup.isVisible():
-            if event.key() == Qt.Key_Down:
-                # 向下导航补全框
-                self.popup.setCurrentRow((self.popup.currentRow() + 1) % self.popup.count())
-                return
-            elif event.key() == Qt.Key_Up:
-                # 向上导航补全框
-                self.popup.setCurrentRow((self.popup.currentRow() - 1) % self.popup.count())
-                return
-            elif event.key() in (Qt.Key_Enter, Qt.Key_Return):
-                # 插入选中的补全项
-                current_item = self.popup.currentItem()
-                if current_item:
-                    self.insert_completion(current_item.text())
-                    self.popup.hide()
-                    return
-            elif event.key() == Qt.Key_Escape:
-                # 按下 Esc 键关闭补全框
-                self.popup.hide()
-                return
-        super().keyPressEvent(event)
+        
 
     def zoom_in(self):
         """放大字体和图标"""
@@ -948,17 +929,8 @@ QTabBar::close-button::pressed {
                 block_text = cursor.block().text()
                 pos_in_block = cursor.position() - cursor.block().position()
                 current_prefix = block_text[:pos_in_block].split()[-1] if block_text.strip() else ""
-
-                # 调用 CompletionPopup 的 generate_completions 方法
-                completions = self.completion_popup.generate_completions(current_prefix)
-                if completions:
-                    position = self.current_editor().mapToGlobal(self.current_editor().cursorRect().bottomRight())
-                    self.completion_popup.show_completions(completions, position)
-                    self.completion_popup.setCurrentRow(0)  # 默认选中第一项
-                else:
-                    self.completion_popup.hide()
             elif key in (Qt.Key_Escape, Qt.Key_Return):
-                self.completion_popup.hide()
+                pass
         return super().eventFilter(obj, event)
 
     def apply_language(self):
